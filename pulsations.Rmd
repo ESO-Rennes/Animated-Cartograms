@@ -1,0 +1,860 @@
+---
+title: "Pulsations"
+output: html_document
+---
+
+# Pulsations
+
+## Chargement des packages
+
+    ```{r}
+    library(tidyverse)
+    library(sf) # version 0.9-8
+    library(sp) # version 1.4-5
+    library(spatstat) # version 2.0-1
+    library(maptools) # version 1.1-1
+    library(cartography) # version 3.0.0
+    library(fftw)
+    library(cartogramR) # NB : FFTW doit avoir ete installe au prealable
+    library(raster)
+    library(rmapshaper) # pour généraliser les contours (simplification des géométries)
+    library(dplyr) #pour manipuler des tableaux de données en SQL
+    library(openxlsx) #pour lire des fichiers EXCEL
+    library(ggplot2) #pour tracer l'histogramme
+    library(tidyr) #pour manipuler des matrices
+    library(rgdal) # pour manipuler des objets ayant une composante spatiale
+    library(rgeos) # pour calculer des centroides
+    library(spdep) # pour calculer l'auto-corrélation spatiale
+    library(geoR) # pour calculer le semi-variogramme empirique
+    library(magick) #pour créer un gif animé
+    library(av) #pour créer une vidéo mp4
+    ```
+
+
+## Chargement de la géométrie
+    ```{r}
+    EMU2019 <- st_read(dsn = getwd(), layer = "EMU2019", stringsAsFactors = FALSE)
+    ```
+
+
+## Chargement des fichiers de l'enquête
+    ```{r}
+    viajes <- read.xlsx("ViajesEODH2019.xlsx") #134497 observations
+    ```
+
+## Définition d'une fonction pour rendre les couleurs transparentes
+
+    ```{r}
+    t_col <- function(color, percent = 50, name = NULL) {
+      #      color = color name
+      #    percent = % transparency
+      #       name = an optional name for the color
+
+      ## Get RGB values for named color
+      rgb.val <- col2rgb(color)
+
+      ## Make new color using input color as base and alpha set by transparency
+      t.col <- rgb(rgb.val[1], rgb.val[2], rgb.val[3],
+                   max = 255,
+                   alpha = (100 - percent) * 255 / 100,
+                   names = name)
+    }
+    ```
+
+## Création de la table de stock de population par UTAM avec pas de temps de 15 minutes
+
+Calcul des durées de voyage (prise en compte des voyages qui commencent un jour et terminent le suivant)
+    
+    ```{r}
+    viajes$duracion <- viajes$p31_hora_llegada - viajes$hora_inicio_viaje
+
+    for(i in 1:nrow(viajes)){
+        if(viajes$p31_hora_llegada[i]<viajes$hora_inicio_viaje[i]){
+        viajes$duracion[i] <- viajes$duracion[i]+1
+        }
+    }
+    ```
+    
+Calcul du temps de voyage moyen en heures. Le temps de voyage moyen (aller-simple) est de 50 minutes
+
+    ```{r}
+    avg = 24*mean(viajes$duracion) 
+    ```
+
+Tri pour écarter les voyages aberrants (0 minute)
+    
+    ```{r}
+    viajes2 <- viajes %>% filter(duracion>0)
+    ```
+
+Traitement des trajets dont le point de départ ou d'arrivée se trouve en dehors de Bogotá DC. On crée un UTAM virtuel regroupant les zones hors DC.
+
+    ```{r}
+    #Repérage des trajets qui sortent ou entrent dans le DC 
+    excl <- c("N/A", "UPR1", "UPR2", "UPR3")
+
+    viajes2$utam_destino[is.na(viajes2$utam_destino)] <- "N/A"
+    viajes2$utam_origen[is.na(viajes2$utam_origen)] <- "N/A"
+
+
+    # création d'un UTAM virtuel "UTAM99"
+    for (i in 1:nrow(viajes2)){
+      if (viajes2$utam_destino[i] %in% excl){
+        viajes2$utam_destino[i] <- "UTAM999"
+      }
+      if (viajes2$utam_origen[i] %in% excl){
+        viajes2$utam_origen[i] <- "UTAM999"
+      }
+    }
+    ```
+
+On fait sortir la personne de l'UTAM d'origine à l'heure de départ et on la fait rentrer dans l'UTAM de destination à l'heure d'arrivée.
+
+
+    ```{r}
+    #Les heures et durées sont en fraction de la journée. On les multiplie par 24 pour les convertir en heures.
+    viajes2$h_arrivee <- 24*viajes2$p31_hora_llegada
+    viajes2$h_depart <- 24*viajes2$hora_inicio_viaje
+
+    #pas de temps de l'animation : défaut 15 minutes
+    pas_de_temps <- 0.25
+
+    #On arrondit les heures au quart d'heure précédent. Par exemple 8h27 --> 8h15
+    viajes2$h_arrivee_round <- pas_de_temps*(viajes2$h_arrivee-viajes2$h_arrivee%%pas_de_temps)%/%pas_de_temps
+    viajes2$h_depart_round <- pas_de_temps*(viajes2$h_depart-viajes2$h_depart%%pas_de_temps)%/%pas_de_temps
+    ```
+
+On filtre pour ne garder que les trajets qui font une boucle dans la journée afin d'éviter un décrochage lors de la lecture en boucle de l'animation. Pour chaque trajet d'un individu, on calcule la somme *UTAM d'arrivée - UTAM de départ*, puis on somme ces valeurs pour chaque individu. Les individus qui font une boucle sont repérés par la valeur 0. Les autres, que l'on souhaite exclure, ont une valeur strictement positivie ou négative. *Cette opération retire 5.7% des observations, ce que l'on considère acceptable*.
+   
+    ```{r}
+    viajes2$utam_origen_id <- as.numeric(gsub("UTAM", "", viajes2$utam_origen))
+    viajes2$utam_destino_id <- as.numeric(gsub("UTAM", "", viajes2$utam_destino))
+    viajes2$utam_test <- viajes2$utam_destino_id - viajes2$utam_origen_id
+
+    viajes_circulares_2 <- viajes2 %>%
+      group_by(id_hogar, id_persona) %>%
+      summarize(circular_2 = sum(utam_test))
+
+    viajes2 <- viajes2 %>%
+      left_join(viajes_circulares_2, by = c("id_hogar" = "id_hogar", "id_persona" = "id_persona"))
+
+    viajes2 <- viajes2 %>%
+      filter(circular_2 == 0)
+      ```
+
+On retire les voyages intra-UTAM qui sont considérés, à cette échelle, comme des voyages n'ayant pas eu lieu car ils ne contribuent pas à la déformation. 
+   
+    ```{r}
+    viajes2 <- viajes2 %>% filter(viajes2$utam_origen != viajes2$utam_destino)
+    ```
+
+On prépare un tableau contenant le solde de flux par UTAM
+
+    ```{r}
+    #solde de mouvements par utam pour une heure donnée pondérée par le facteur d'expansion
+    sorties_utam <- viajes2 %>%
+      group_by(h_depart_round,utam_origen) %>%
+      summarize(sorties = sum(f_exp))
+
+    entrees_utam <- viajes2 %>%
+      group_by(h_arrivee_round,utam_destino) %>%
+      summarize(entrees = sum(f_exp))
+
+
+    #création d'un tableau avec le solde de flux par UTAM
+    flux <- data.frame(EMU2019$UTAM)
+    names(flux)[names(flux) == 'EMU2019.UTAM'] <- 'UTAM'
+
+    flux <- flux %>%
+      full_join(sorties_utam, by = c("UTAM" = "utam_origen"))
+
+    flux <- flux %>%  
+      full_join(entrees_utam, by = c("UTAM" = "utam_destino",  "h_depart_round" = "h_arrivee_round"))
+
+    flux[is.na(flux)] <- 0
+
+    flux$solde <- flux$entrees - flux$sorties
+    names(flux)[names(flux) == 'h_depart_round'] <- 'h_round'
+
+
+    #tri chronologique par heure, puis par UTAM
+    flux <- arrange(flux, h_round, UTAM)
+
+    #conversion en matrice de flux
+    f <- pivot_wider(flux, id_cols = UTAM, names_from = h_round, values_from = solde)
+    f[is.na(f)] <- 0
+    ```
+
+Pour choisir l'heure de référence (où chacun est chez soi), on trace un histogramme de la répartition des heures de déplacements. On se rend compte que le creux de déplacement est maximal à 2h45. On va affecter la variable *NUMPERSTOT*, qui donne la population de nuit issue du recensement de 2018, à ce créneau.
+
+    ```{r}
+    #entrées
+    ggplot(flux, aes(x = h_round, y = entrees)) +
+      stat_summary(geom = "bar", position = "dodge", fun = sum)
+
+    #sorties 
+    ggplot(flux, aes(x = h_round, y = sorties)) +
+      stat_summary(geom = "bar", position = "dodge", fun = sum)
+      ```
+
+![](https://i.imgur.com/x886mqZ.png)
+![](https://i.imgur.com/qfatK37.png)
+
+
+
+    ```{r}
+    #Création d'un tableau avec le stock de population par UTAM heure par heure
+
+    stock <- f %>%
+      inner_join(EMU2019, by = 'UTAM', copy = TRUE) %>% #jointure avec EMU_2019
+      relocate('NUMPERSTOT', .after = '2.75') #positionnement de NUMPERSTOT au niveau de la tranche 2h45 du matin
+
+    #un peu de slicing pour réordonner les colonnes en commençant à 3h00.
+    stock <- stock[,1:98] 
+    stock1 <- stock[,1]
+    stock2 <- stock[,2:13]
+    stock3 <- stock[,14:98]
+
+    stock <-cbind(stock1, stock3, stock2)
+
+    #remplissage de la matrice de stock
+    for (i in 3:ncol(stock)){
+      stock[,i]<-stock[,i]+stock[,i-1]
+    }
+
+    #On remplace les éventuelles valeurs négatives par des zéros. #Aucun UTAM concerné a priori
+    for (i in 3:ncol(stock)){
+      for (j in 1:nrow(stock)){
+        if(stock[j,i]<0){
+          stock[j,i] <- 0
+        }
+      }
+    }
+    ```
+
+
+On transpose la table pour tracer des graphes de la population par UTAM au fil de la journée.
+    
+    ```{r}
+    stock2 <- stock
+    rownames(stock2)<-stock2$UTAM #on renomme les lignes avec les codes des UTAM
+    stock2 <- stock2[,3:98] #on supprime les deux premières colonnes
+    tstock <- data.frame(t(stock2))
+
+    tstock$hours <- rownames(tstock)
+    tstock$rank <- c(1:96)
+
+    #on trace le graphe pour deux UTAM : EL LUCERO et CHAPINERO
+    ggplot(tstock, aes(x = rank)) +                    
+      geom_line(aes(y=UTAM67, col="EL LUCERO")) +  
+      geom_line(aes(y=UTAM99, col="CHAPINERO")) + 
+      scale_colour_manual("", breaks = c("EL LUCERO", "CHAPINERO"), values = c("red", "blue")) +
+      scale_x_continuous(breaks=c(1+4*(0:23)), labels=c(3:23,0:2)) +
+      labs(x="Heure", y="Population") +
+      theme(legend.position = "left")
+      ```
+      
+![](https://i.imgur.com/4elWx8l.png)
+
+      
+## Premier cartogramme
+
+    ```{r}
+    #Jointure avec le fichier de géométrie
+    EMU2019_2 <- EMU2019[,c(2,55)] %>%
+      left_join(stock, by = "UTAM")
+
+    #on génère la liste des heures bien ordonnées
+    heures <- c(0.25*(12:95),0.25*(0:11))
+
+    #on génère des étiquettes à afficher sur la carte à partir de cette liste
+    heures_lab <- as.character(heures)
+    for(i in 1:length(heures)){
+      heures_lab[i] <- paste(as.character(heures[i]%/%1), "H",as.character(60*heures[i]%%1))
+      heures_lab[i] <- str_replace(heures_lab[i], "H 0", "H 00")
+    }
+
+    #on renomme les colonnes des heures
+    for (i in 1:ncol(EMU2019_2)){ 
+      names(EMU2019_2)[names(EMU2019_2) == heures[i]] <- paste("stock",heures[i], sep = "_")
+    }
+    ```
+
+Tests d'export de cartogrammes sur des heures individuelles, dans le cas présent à 3h00.On fixe une erreur absolue d'une valeur de 10 hectares, soit 100 000 m². On limite le calcul à 20 itérations.
+    
+    ```{r}
+    EMU2019_carto <- cartogramR(EMU2019_2, count = paste("stock",heures[1], sep = "_"), options = list(maxit = 100, absrel = FALSE, abserror = 100000))
+
+    titre <- paste("Population par UTAM à Bogotá", heures_lab[1], sep = " - ")
+    png(paste(titre,".png"), width = 1920, height = 1920)
+    plot(EMU2019_carto, color = "black")
+    title(main = titre, cex.main = 2)
+    dev.off()
+        
+    #conversion en fichier sf
+    EMU2019_carto_sf <- as.sf(EMU2019_carto)
+    ```
+
+![](https://i.imgur.com/GmXUsTY.png)
+
+
+## Cartographie de la seconde variable : facteur multiplicatif de la population à chaque quart d'heure par rapport à la population nocturne
+On va calculer les facteurs multiplicatifs à partir de la table de stock. On remplit le tableau colonne par colonne en divisant le stock pour chaque tranche horaire par le stock de référence *NUMPERSTOT*.
+
+    ```{r}
+    variation <- stock
+
+    for (i in 3:ncol(variation)){ 
+      variation[,i]<-variation[,i]/variation[,2]
+      #on renomme les colonnes pour les distinguer des variables de stock lors de la jointure
+      names(variation)[names(variation) == heures[i]] <- paste("var",heures[i], sep = "_") 
+    }
+    names(variation)[names(variation) == heures[1]] <- paste("var",heures[1], sep = "_")
+    names(variation)[names(variation) == heures[2]] <- paste("var",heures[2], sep = "_")
+
+    #Jointure avec le fichier des géométries
+    EMU2019_3 <- EMU2019_2 %>%
+      left_join(variation, by = "UTAM")
+      ```
+
+Choix des seuils pour 6 classes
+    
+    ```{r}
+    bks <- c(0,0.72,0.9,1.1,2,5,50)
+    ```
+
+Création d'une palette de couleurs (double gradation harmonique)
+    
+    ```{r}
+    cols <- c("#303b98","#00beed","#fafaaa","#f2bf26","#e96831","#bb2b30")
+    ```
+
+Affichage de la carte chloroplèthe à 12h00.
+
+      ```{r}
+      titre <- heures_lab[37]#paste("Facteur multiplicatif de la population à", heures_lab[37], "par rapport à l'heure de référence", sep = " ")
+      png(paste(titre, ".png"), width = 960, height = 960)
+      plot(st_geometry(EMU2019_3))
+      choroLayer(x = EMU2019_3, var = paste("var", heures[37], sep = "_"), breaks = bks, col = cols, legend.title.txt = "Facteur multiplicatif", legend.values.rnd = 2, legend.values.cex = 1.5, legend.title.cex = 2)
+      title(main = titre, cex.main = 4)
+      dev.off()
+      ```
+
+![](https://i.imgur.com/mt8f56Z.png)
+
+
+
+## Lissage spatial
+### Étapes préliminaires
+
+    ```{r}
+    #Pour convertir la couche des UTAM au format spatial object (format requis par le package geoR)
+
+    UTAM <- as(EMU2019_3, "Spatial")
+
+    #Pour calculer les centroides des UTAM (indispensable pour le calcul sur les plus proches voisins)
+    
+    UTAMCentroids <- gCentroid(UTAM,byid=TRUE)
+
+    #Pour récupérer les données initiales des UTAM sur les centroides
+
+    UTAMCentroids <- SpatialPointsDataFrame(UTAMCentroids, UTAM@data)
+
+    #Calcul sur les plus proches voisins
+
+    listPPV <- knearneigh(UTAMCentroids@coords, k = 1) # pour connaître le plus proche voisin de chaque UTAM
+    PPV <- knn2nb(listPPV, row.names = UTAM$UTAM) # pour convertir l'objet knn en objet nb
+    distPPV <- nbdists(PPV, UTAMCentroids@coords) # pour connaître la distance entre plus proches voisins
+    print(as.data.frame(t(as.matrix(summary(unlist(distPPV))))))
+    hist(unlist(distPPV), breaks = 20,
+         main = "Distance au plus proche voisin",
+         col = "black", border = "white", xlab = "Distance", ylab = "Fréquence")
+    ```
+         
+![](https://i.imgur.com/clqcQXT.png)
+         
+La plupart des UTAM ont au moins un voisin dans un rayon de 1500m. 
+
+    ```{r}
+    #pour convertir les UTAM en objects nb
+    nbUTAM <- poly2nb(pl = UTAM,
+                     row.names = UTAM$UTAM,
+                     snap = 50,
+                     queen = TRUE)
+
+    # pour identifier les UTAM sans voisins topologiques 
+    summary(nbUTAM)
+    ```
+    
+    
+![](https://i.imgur.com/HQMsfAw.png)
+
+
+    ```{r}
+    # création d'une liste des 16 UTAM sans voisins fournis par l'instruction précédente
+    Iles <- c("UTAM89",
+              "UTAM563",
+              "UTAM540",
+              "UTAM580",
+              "UTAM640",
+              "UTAM650",
+              "UTAM660",
+              "UTAM670",
+              "UTAM680",
+              "UTAM690",
+              "UTAM700",
+              "UTAM600",
+              "UTAM630",
+              "UTAM620",
+              "UTAM610",
+              "UTAM590")
+
+    #suppression des "îles" sans quoi le calcul de l'indice de Moran n'est pas possible
+    UTAM <- UTAM[which(!UTAM$UTAM %in% Iles),]
+    EMU2019_3 <- EMU2019_3[which(!EMU2019_3$UTAM %in% Iles),]
+    nbUTAM <- poly2nb(pl = UTAM,
+                     row.names = UTAM$UTAM,
+                     snap = 50,
+                     queen = TRUE)
+
+    #Calcul du test de Moran pour chaque heure
+    moran <- c(0*(1:96))
+    for(i in 1:96){
+      m <- moran.test(UTAM@data[,100+i], listw = nb2listw(nbUTAM)) #dans la table UTAM, les colonnes contenant les facteurs multiplicatifs sont les 101 à 196
+      moran[i] <- as.numeric(m$estimate[1])
+    }
+    #affichage
+    plot(heures,moran)
+    ```
+
+![](https://i.imgur.com/ZzS4kk0.png)
+
+
+### Variogramme
+
+    ```{r}
+    #pour calculer les centroides des UTAM sans les îles (indispensable pour le calcul du semi-variogramme)
+    UTAMCentroids <- gPointOnSurface(UTAM,byid=TRUE)
+
+    #pour récupérer les données initiales des communes sur les centroides
+    UTAMCentroids <- SpatialPointsDataFrame(UTAMCentroids, UTAM@data)
+
+    #pour convertir le SpatialPointsDataFrame en objet geodata
+    UTAMCentroids.geodata <- as.geodata(UTAMCentroids, data.col = "var_12")
+
+    #pour calculer le semi-variogramme empirique
+    vario.ex<- variog(UTAMCentroids.geodata, bin.cloud=TRUE, option = "bin")
+    plot(vario.ex, main = "Semi-variogramme du facteur multiplicatif à 12H en fonction de la distance")
+    lines(vario.ex, type ="l", lty = 2, col="red")
+    ```
+    
+![](https://i.imgur.com/7DyK95T.png)
+
+
+### Carte lissée à 12h00
+
+    #pour définir le contour de Bogotá comme emprise pour le lissage
+    Emprise <- as.owin(gBuffer(UTAM, width=0))
+
+    #pour creer un objet ppp (format spatstat) et y intégrer dedans l'emprise et les valeurs à lisser (facteur multiplicatif à 12H)
+    UTAM.ppp <- ppp(UTAMCentroids@coords[,1], UTAMCentroids@coords[,2], window = Emprise, marks = UTAM$var_12)
+
+    #pour calculer la surface lissée (rayon lissage : 2 km et résolution spatiale de l'image : 1 ha) --> calcul long
+    cartelissee <- Smooth(UTAM.ppp, kernel = "gaussian", sigma = 1000, weights = UTAM.ppp$marks, eps=sqrt(10000))
+
+    #Conversion de la surface lissée au format raster
+    cartelissee.raster <- raster(cartelissee, crs = st_crs(UTAM)[[2]])
+
+    #Paramétrage des marges de la fenêtre pour maximiser l'emprise de la carte
+    par(mar = c(0, 0, 0, 0))
+
+    #Affichage de tous les UTAM en arrière plan en centrant la carte sur Bogotá.
+    plot(st_geometry(EMU2019_3), col = NA, border = "black", bg = "grey90", xlim = c(st_bbox(UTAM)[1], st_bbox(UTAM)[3]), ylim = c(st_bbox(UTAM)[2], st_bbox(UTAM)[4]))
+
+    #Affichage de la surface lissée
+    plot(cartelissee.raster, breaks = bks, col=cols, add = T, legend=F)
+
+    #Affichage des limites des UTAM
+    plot(st_geometry(EMU2019_3), border = "black", lwd = 0.05, lty=3, add = T)
+
+    legendChoro(
+      pos = "bottomleft",
+      title.txt = "Facteur multiplicatif",
+      breaks = bks, 
+      nodata = FALSE,
+      values.rnd = 2,
+      col = cols,
+      cex = 1.2,
+      values.cex = 1,
+      title.cex = 1.2
+    )
+
+    title("Facteur multiplicatif de la population à 12h, rayon de lissage 1000m", cex.main = 1.5, line = -1)
+    ```
+
+Le choix du rayon de lissage est important. Après plusieurs essais, on retient un rayon de 1000m qui est un bon compromis entre la prise en compte de suffisamment de voisins pour un UTAM donné, et la représentations fidèle des comportements des différents UTAM. Ci-dessous, la comparaison entre un rayon de lissage de 1000m et un rayon de 1500m.
+
+![](https://i.imgur.com/Yzd11Fq.png)
+![](https://i.imgur.com/slT8Q3z.png)
+
+
+## Cartogramme et surface lissée au pas de temps d'un quart d'heure
+
+    ```{r}
+    Emprise <- as.owin(gBuffer(UTAM, width=0))
+    bks <- c(0,0.72,0.9,1.1,2,5,50)
+    #initialisation de la palette de couleurs (double gradation harmonique)
+    cols_ini <- c("#303b98","#00beed","#fafaaa","#f2bf26","#e96831","#bb2b30")
+    cols <- cols_ini
+    #application facteur de transparence de 50% pour diminuer l'intensité des couleurs
+    trans <- 50
+    #application du facteur de transparence
+    for (j in 1:10){
+      cols[j] <- t_col(cols_ini[j], percent = trans)
+    }
+    Correspondance_palette <- as.data.frame(cbind(c(1:10), cols))
+    names(Correspondance_palette)[names(Correspondance_palette) ==  "V1"] <- "Id_Classe"
+
+    #choix des UTAM représentatifs des localidades dont le nom sera affiché. Il est possible d'en ajouter ou d'en enlever en jouant sur les #
+    liste <- c(#"UTAM38",
+               "UTAM22",
+               "UTAM84",
+               "UTAM90",
+               "UTAM67",
+               "UTAM73",
+               "UTAM77",
+               "UTAM44",
+               "UTAM94",
+               #"UTAM102",
+               #"UTAM40",
+               #"UTAM53",
+               #"UTAM32",
+               #"UTAM95",
+               "UTAM28",
+               #"UTAM100",
+               "UTAM42",
+               "UTAM9",
+               "UTAM57",
+               "UTAM574",
+               #"UTAM520",
+               "UTAM500")
+
+    #Isolement de l'UTAM "el rincon de Suba" pour affichage de l'échelle
+    RINCON <- EMU2019_carto_sf[which(EMU2019_carto_sf$UTAM == "UTAM28"),]
+    RINCON$geom[[1]] = RINCON$geom[[1]] + st_point(c(-25000,-10000))
+    RINCON$geometry <- RINCON$geom
+    RINCON$legend <- paste(RINCON$NUMPERSTOT, "personnes", sep = "\n")
+    #plot(EMU2019_carto_sf$geom)
+    #plot(RINCON$geom, add = T)
+
+    for (i in 1:96){
+      par(mar = c(1, 1, 1, 1))
+      print(10*i+1) #en mode débug !
+      carto <- cartogramR(EMU2019_3, count = paste("stock",heures[i], sep = "_"), options = list(maxit = 20, absrel = FALSE, abserror = 100000))
+      titre <- paste("Population par UTAM à Bogotá", heures_lab[i], sep = " - ")
+      png(paste(titre,".png"), width = 960, height = 960)
+
+      #pour creer un objet ppp (format spatstat) et y intégrer dedans l'emprise et les valeurs à lisser (facteur multiplicatif à 12H)
+      UTAM.ppp <- ppp(UTAMCentroids@coords[,1], UTAMCentroids@coords[,2], window = Emprise, marks = UTAM@data[,100+i])
+
+      print(10*i+2)
+      #pour calculer la surface lissée (rayon lissage : 1 km et résolution spatiale de l'image : 1 ha) --> calcul long
+      cartelissee <- Smooth(UTAM.ppp, kernel = "gaussian", sigma = 1000, weights = UTAM.ppp$marks, eps=sqrt(10000))
+
+      #Conversion de la surface lissée au format raster
+      cartelissee.raster <- raster(cartelissee, crs = st_crs(UTAM)[[2]])
+
+      #reclassification de la surface lissée préalablement calculée
+      cartelissee.reclass <- cut(cartelissee.raster, breaks = bks)
+
+      #vectorisation de la surface reclassée --> calcul un peu long
+      cartelissee.vecteur <- as(rasterToPolygons(cartelissee.reclass, n=4, na.rm=TRUE, digits=12, dissolve=TRUE), "sf")
+
+      #pour trier les enregistrements de la colonne layer
+      cartelissee.vecteur <- cartelissee.vecteur[order(cartelissee.vecteur$layer, decreasing = FALSE), ]
+
+      #création d'une liste de classes présentes à l'heure donnée
+      liste_classes_presentes <- as.character(cartelissee.vecteur$layer)
+
+      #création d'une palette de couleurs correspondant uniquement aux classes présentes
+      couleurs_classes_presentes <- Correspondance_palette[which(Correspondance_palette$Id_Classe %in% liste_classes_presentes),]
+
+      print(10*i+3)
+      #Pour déformer la surface lissée suivant les mêmes paramètres que ceux ayant servi à construire le cartogramme
+      cartelissee.vecteur.drapee <- geom_cartogramR(cartelissee.vecteur, carto)
+
+      #pour généraliser les contours de cartelissee.vecteur.drapee (on garde 5% des sommets initiaux)
+      cartelissee.vecteur.drapee <- ms_simplify(cartelissee.vecteur.drapee, keep = 0.05, keep_shapes = TRUE)
+
+      #Affichage de tous les UTAM en arrière-plan
+      plot(st_geometry(EMU2019_3), col = NA, border = "grey90", bg = "grey90", xlim = c(st_bbox(UTAM)[1], st_bbox(UTAM)[3]), ylim = c(st_bbox(UTAM)[2], st_bbox(UTAM)[4]))
+
+      #Affichage de la surface lissée déformée
+      typoLayer(
+        x = cartelissee.vecteur.drapee,
+        var="layer",
+        col = as.character(couleurs_classes_presentes$cols),
+        lwd = 0.1,
+        border = NA,
+        legend.pos = "n",
+        add=T)
+
+      legendChoro(
+        pos = "bottomleft",
+        title.txt = "Facteur multiplicatif",
+        breaks = c("","0.72","0.9","1.1","2","5",""),
+        nodata = FALSE,
+        values.rnd = 2,
+        col = cols,
+        cex = 1.2,
+        values.cex = 1,
+        title.cex = 1.5
+      )
+
+      title(main = titre, cex.main = 2, line = -2) 
+
+      #conversion de l'objet cartogram en objet sf
+      carto_sf <- as.sf(carto)
+      #sélection des zones d'enquête modural
+      carto_sf_modural <- carto_sf %>%
+        filter(UTAM %in% c("UTAM28", "UTAM67", "UTAM86", "UTAM575"))
+      
+      #Affichage des limites des UTAM déformés
+      plot(carto_sf$geometry, border = "white", lwd = 1, add = TRUE)
+      
+      #Affichage des zones d'étude MODURAL (optionnel)
+      plot(carto_sf_modural$geometry, border = "black", lwd = 3, add = TRUE)
+      plot(carto_sf_modural$geometry, border = "white", lwd = 1, add = TRUE)
+
+      #chaque localidad est représentée par un UTAM choisi à la main
+      localidades <- carto_sf %>%
+        filter(UTAM %in% liste)
+
+      #Affichage du nom des Localidades
+      labelLayer(localidades, txt = "LocMuni", halo = TRUE, bg = "white", r = 0.05, cex = 1.2, pos = 3, font = 4, offset = 0)
+
+      #Affichage de l'UTAM EL RINCON dans un coin
+      plot(RINCON$geom, col = NA, border = "black", add = TRUE)
+      labelLayer(RINCON, txt = "legend", halo = TRUE, bg = "white", r = 0.05, cex = 1.2, pos = 3, font = 2, offset = 0)
+
+      #Affichage de la carte non déformée
+      mat <- matrix(c(0.7,1.0,0.1,0.4), nrow=1)
+      split.screen(figs = mat, erase=FALSE)
+      plot(EMU2019_3$geom, border = "grey60", add = TRUE)
+      mtext("Carte initiale non déformée", side = 1, line = 3, outer = FALSE)
+      close.screen(all = TRUE)
+      dev.off()
+    }
+    ```
+    
+Ci-dessous, quelques uns des 96 visuels obtenus.
+
+![](https://i.imgur.com/IzWVuH5.png)
+![](https://i.imgur.com/btfErOq.png)
+![](https://i.imgur.com/KKwGJDt.png)
+![](https://i.imgur.com/KaneEYS.png)
+
+
+## Déformation initiale de la carte
+Pour ce faire, on réalise une interpolation entre la carte de Bogotá non déformée et la carte déformée selon la population de nuit à 3h00.
+
+    ```{r}
+    EMU2019_area <- EMU2019[which(!EMU2019$UTAM %in% Iles),]
+
+    EMU2019_area$Area <- as.numeric(st_area(EMU2019_area$geometry))
+
+
+    #calcul de la population totale
+    Population <- sum(EMU2019_area$NUMPERSTOT)
+
+    #calcul de la superficie totale (champ rajouté sur QGIS)
+    Superficie <- sum(EMU2019_area$Area)
+
+    #nombre d'images intermédiaires pour la déformation
+    imgs <- 8
+
+    #Ventilation de la population totale proportionnellement à la superficie des UTAM pour l'image 0
+    EMU2019_area$NUMPERSTOT_0 <- EMU2019_area$Area*Population/Superficie
+
+    #Champ que l'on va faire varier
+    EMU2019_area$NUMPERSTOT_i <- EMU2019_area$NUMPERSTOT
+
+    #création des images intermédiaires par une interpolation linéaire (plus lisse qu'en utilisant le TCAM, qui donnerait une croissance trop rapide sur la fin et un arrêt brutal)
+    Emprise <- as.owin(gBuffer(UTAM, width=0))
+    par(mar = c(1, 1, 1, 1))
+
+    #affichage de la carte non déformée
+    png(paste("deformation 0.png"), width = 960, height = 960)
+
+    plot(st_geometry(EMU2019_area), col = NA, border = "black", bg = "grey90", xlim = c(st_bbox(UTAM)[1], st_bbox(UTAM)[3]), ylim = c(st_bbox(UTAM)[2], st_bbox(UTAM)[4]))
+
+    dev.off()
+
+    for (i in 1:imgs){
+      print(i)
+      EMU2019_area$NUMPERSTOT_i <- EMU2019_area$NUMPERSTOT*i/imgs + EMU2019_area$NUMPERSTOT_0*(imgs-i)/imgs
+      carto <- cartogramR(EMU2019_area, count = "NUMPERSTOT_i", options = list(maxit = 20, absrel = FALSE, abserror = 100000))
+      png(paste("deformation", i,".png"), width = 960, height = 960)
+      plot(st_geometry(EMU2019_3), col = NA, border = "grey90", bg = "grey90", xlim = c(st_bbox(UTAM)[1], st_bbox(UTAM)[3]), ylim = c(st_bbox(UTAM)[2], st_bbox(UTAM)[4]))
+      carto_sf <- as.sf(carto)
+      plot(carto_sf$geometry, border = "black", lwd = 1, add = TRUE)
+      dev.off()
+    }
+    ```
+    
+![](https://i.imgur.com/Ug6gvfC.png)
+![](https://i.imgur.com/4YW1ceX.png)
+![](https://i.imgur.com/6bFMMz5.png)
+![](https://i.imgur.com/BVDVN5S.png)
+
+
+## Fondu enchaîné pour l'apparition de la seconde variable
+
+    ```{r}
+    cols <- cols #on reprend les couleurs de l'animation
+
+    carto <- cartogramR(EMU2019_3, count = paste("stock",heures[96], sep = "_"), options = list(maxit = 20, absrel = FALSE, abserror = 100000))
+
+    #pour creer un objet ppp (format spatstat) et y intégrer dedans l'emprise et les valeurs à lisser (facteur multiplicatif à 12H)
+    UTAM.ppp <- ppp(UTAMCentroids@coords[,1], UTAMCentroids@coords[,2], window = Emprise, marks = UTAM@data[,196])
+
+    #pour calculer la surface lissée (rayon lissage : 1 km et résolution spatiale de l'image : 1 ha) --> calcul long
+    cartelissee <- Smooth(UTAM.ppp, kernel = "gaussian", sigma = 1000, weights = UTAM.ppp$marks, eps=sqrt(10000))
+
+    #conversion de la surface lissée au format raster
+    cartelissee.raster <- raster(cartelissee, crs = st_crs(UTAM)[[2]])
+
+    #reclassification de la surface lissée préalablement calculée
+    cartelissee.reclass <- cut(cartelissee.raster, breaks = bks)
+
+    #vectorisation de la surface reclassée --> calcul un peu long
+    cartelissee.vecteur <- as(rasterToPolygons(cartelissee.reclass, n=4, na.rm=TRUE, digits=12, dissolve=TRUE), "sf")
+
+    #pour trier les enregistrements de la colonne layer
+    cartelissee.vecteur <- cartelissee.vecteur[order(cartelissee.vecteur$layer, decreasing = FALSE), ]
+
+    #création d'une liste de classes présentes à l'heure donnée
+    liste_classes_presentes <- as.character(cartelissee.vecteur$layer)
+
+    #pour déformer la surface lissée suivant les mêmes paramètres que ceux ayant servi à construire le cartogramme
+    cartelissee.vecteur.drapee <- geom_cartogramR(cartelissee.vecteur, carto)
+
+    #pour généraliser les contours de cartelissee.vecteur.drapee (on garde 5% des sommets initiaux)
+    cartelissee.vecteur.drapee <- ms_simplify(cartelissee.vecteur.drapee, keep = 0.05, keep_shapes = TRUE)
+
+    #niveau de transparence (%)
+
+    for (i in c(50,60,70,80,90)) {
+      trans <- i
+      cols_2 <- cols
+      for (j in 1:10){
+        cols_2[j] <- t_col(cols[j], percent = trans)
+      }
+
+      Emprise <- as.owin(gBuffer(UTAM, width=0))
+      par(mar = c(1, 1, 1, 1))
+
+      #création d'un tableau de correspondances avec pour chaque classe son code couleur
+      Correspondance_palette <- as.data.frame(cbind(c(1:6), cols_2))
+      names(Correspondance_palette)[names(Correspondance_palette) ==  "V1"] <- "Id_Classe"
+
+      #création d'une palette de couleurs correspondant uniquement aux classes présentes
+      couleurs_classes_presentes <- Correspondance_palette[which(Correspondance_palette$Id_Classe %in% liste_classes_presentes),]
+
+      #Affichage de tous les UTAM en arrière-plan
+      titre <- paste("transition", 100 - trans, "pourcent", sep = " - ")
+      png(paste(titre,".png"), width = 960, height = 960)
+      plot(st_geometry(EMU2019_3), col = NA, border = "grey90", bg = "grey90", xlim = c(st_bbox(UTAM)[1], st_bbox(UTAM)[3]), ylim = c(st_bbox(UTAM)[2], st_bbox(UTAM)[4]))
+
+      #Affichage de la surface lissée déformée
+      typoLayer(
+        x = cartelissee.vecteur.drapee,
+        var="layer",
+        col = as.character(couleurs_classes_presentes$cols),
+        lwd = 0.1,
+        border = as.character(couleurs_classes_presentes$cols),
+        legend.pos = "n",
+        add=T)
+
+      legendChoro(
+        pos = "bottomleft",
+        title.txt = "Facteur multiplicatif",
+        breaks = c("","0.72","0.9","1.1","2","5",""),
+        nodata = FALSE,
+        values.rnd = 2,
+        col = cols_2,
+        cex = 1.2,
+        values.cex = 1,
+        title.cex = 1.5
+      )
+
+      par(col.main = paste("grey", 1.8*i-90))
+      title(main = "Population par UTAM à Bogotá - 3 H 00", cex.main = 2, line = -2) 
+
+      #conversion de l'objet cartogram en objet sf
+      carto_sf <- as.sf(carto)
+      #sélection des zones d'enquête modural
+      carto_sf_modural <- carto_sf %>%
+        filter(UTAM %in% c("UTAM28", "UTAM67", "UTAM86", "UTAM575"))
+      #Affichage
+      plot(carto_sf$geometry, border = paste("grey", 200-2*i), lwd = 1, add = TRUE)
+      plot(carto_sf_modural$geometry, border = paste("grey", 1.8*i-90), lwd = 3, add = TRUE)
+      plot(carto_sf_modural$geometry, border = paste("grey", 200-2*i), lwd = 1, add = TRUE)
+  
+      #chaque localidad est représentée par un UTAM, seule façon d'éviter les problèmes de géométrie dûs aux déformations
+      localidades <- carto_sf %>%
+        filter(UTAM %in% liste)
+
+      #Affichage du nom des Localidades
+      labelLayer(localidades, txt = "LocMuni", halo = TRUE, bg = "white", r = 0.05, cex = 1.2, pos = 3, font = 4, offset = 0, col = paste("grey", 1.8*i-90))
+
+      #Affichage de l'UTAM EL RINCON dans un coin
+      plot(RINCON$geom, col = NA, border = paste("grey", 1.8*i-90), add = TRUE)
+      labelLayer(RINCON, txt = "legend", halo = TRUE, bg = "white", r = 0.05, cex = 1.2, pos = 3, font = 2, offset = 0, col = paste("grey", 1.8*i-90))
+
+      #Affichage de la carte non déformée
+      mat <- matrix(c(0.7,1.0,0.1,0.4), nrow=1)
+      split.screen(figs = mat, erase=FALSE)
+      plot(EMU2019_3$geom, border = paste("grey", 0.6*i+30), add = TRUE)
+      mtext("Carte initiale non déformée", side = 1, line = 3, col = paste("grey", 1.8*i-90), outer = FALSE)
+      close.screen(all = TRUE)
+      dev.off()
+    }
+    ```
+    
+![](https://i.imgur.com/t1xXvJY.png)
+![](https://i.imgur.com/WQJSMOA.png)
+![](https://i.imgur.com/ygPQRp5.png)
+![](https://i.imgur.com/YIRmih1.png)
+![](https://i.imgur.com/kceKtxS.png)
+
+
+
+## Création d'un gif animé ou d'une vidéo mp4 à partir de la série d'images produite
+
+    ```{r}
+    #chargement des informations des fichiers à intégrer à l'animation
+
+    details = file.info(list.files(getwd(), full.names = TRUE))
+    
+    #tri par date de création
+    details = details[with(details, order(as.POSIXct(mtime))), ] 
+
+    imgs = rownames(details)
+
+    img_list <- lapply(imgs, image_read)
+
+    img_joined <- image_join(img_list)
+    img_animated <- image_animate(img_joined, fps = 20) #animation
+
+    #export en gif
+    image_write(image = img_animated, path = "animation.gif")
+
+    #export en mp4
+    av_encode_video(input = list.files(getwd()),framerate = 15, "animation.mp4")
+    ```
+    
+Ci-dessous un export au format gif de l'animation bouclée, hors déformation initiale.
+    
+![](https://i.imgur.com/LbbOskt.gif)
+
