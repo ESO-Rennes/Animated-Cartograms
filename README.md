@@ -20,6 +20,7 @@ This study is part of the activities of the <a href="https://modural.hypotheses.
 Acknowledgements: <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i>
 
 <br>
+<br>
 ----- VERSION FRANCAISE ----- <br>
 
 <i>Ce travail a été réalisé par Hugo Thomas lors de son stage encadré par Florent Demoraes, à l'unité de recherche CNRS ESO de Rennes (France), en septembre et octobre 2021.</i>
@@ -33,4 +34,6 @@ Cette étude s’inscrit dans les activités du <a href="https://modural.hypothe
 #### Mots-clefs
 <i>Pulsations urbaines circadiennes, rééquilibrage populationnel journalier, densités diurnes, découplage spatial, micro-données, cartogramme animé, script R, Bogotá</i>
 
-Remerciements : Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet
+--> Accéder au <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations.Rmd" target="_new" rel="noopener"><strong> fichier markdown R</strong></a>
+
+Remerciements : <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i>
