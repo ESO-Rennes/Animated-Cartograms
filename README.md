@@ -36,4 +36,31 @@ Cette étude s’inscrit dans les activités du <a href="https://modural.hypothe
 
 --> Accéder au <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations.Rmd" target="_new" rel="noopener"><strong> fichier R markdown</strong></a>
 
-Remerciements : <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i>
+Remerciements : <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i><br>
+
+<br>
+</br> <strong>References</strong>
+
+Bertin J (1967). Sémiologie graphique: les diagrammes, les réseaux, les cartes. Mouton & Gauthier-Villars, Paris-La Haye.
+
+Bertin J (1983). Semiology of graphics: diagrams, networks, maps. The University of Wisconsin Press, Madison, (trans. W. j. Berg). ISBN 0-299-09060-4.
+
+Cauvin C, Escobar F, Serradj A (2007). Cartographie thématique 2 – Des transformations incontournables. Traité IGAT  – Information Géographique et Aménagement du Territoire ; Aspects fondamentaux de l’analyse spatiale. Hermès-Lavoisier.
+
+Cauvin C, Escobar F, Serradj A (2010).  Cartography and the Impact of the Quantitative Revolution. John Wiley & Sons, Inc. https://onlinelibrary.wiley.com/doi/book/10.1002/9781118558126.
+
+Demoraes F., Bouquet M., Mericskay B.,(2021) – How visually effective are animated cartograms? Potential improvements based on the example of segregation in Bogotá (1993-2005), M@ppemonde. DOI:10.4000/mappemonde.5928 - https://hal.archives-ouvertes.fr/hal-03152983 
+
+Demoraes F., Bouquet M., Mericskay B.,(2021) – L’efficacité visuelle des cartogrammes animés en question - Une piste d’amélioration à travers l’exemple de la ségrégation à Bogotá (1993-2005), M@ppemonde. DOI:10.4000/mappemonde.5813 - https://hal.archives-ouvertes.fr/hal-03029241 
+
+Dougenik JA, Chrisman NR, Niemeyer DR (1985). “An  Algorithm  To Construct Continuous Area Cartograms.”   The Professional Geographer, 37(1), 75–81. https://onlinelibrary.wiley.com/doi/abs/10.1111/j.0033-0124.1985.00075.x
+
+Gastner MT,  Newman MEJ  (2004).   “Diffusion-Based Method  for  Producing Density-Equalizing Maps.”  Proceedings of the National Academy of Sciences, 101(20), 7499–7504. https://doi.org/10.1073/pnas.0400280101
+
+Gastner MT,  Seguy V, More P (2018). “Fast Flow-Based Algorithm  for Creating Density-Equalizing Map Projections.”  Proceedings of the National Academy of Sciences, 115(10), E2156–E2164. https://doi.org/10.1073/pnas.1712674115
+
+Nusrat S, Kobourov S (2016). “The State of the Art  in Cartograms.”  Computer Graphics Forum, 35(3), 619–642. https://onlinelibrary.wiley.com/doi/abs/10.1111/cgf.12932
+
+Pebesma E (2018). “Simple Features for R: Standardized Support for Spatial Vector Data.” The R Journal, 10(1), 439–446. doi:10.32614/RJ-2018-009. https://journal.r-project.org/archive/2018/RJ-2018-009/index.html
+
+Tobler W (2004). “Thirty Five Years of Computer Cartograms.”  Annals of the Association of American Geographers, 94(1), 58–73. https://onlinelibrary.wiley.com/doi/full/10.1111/j.1467-8306.2004.09401004.x
