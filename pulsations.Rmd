@@ -1,5 +1,7 @@
 ---
-title: "Pulsations"
+title: "Pulsations urbaines circadiennes : le cas de Bogotá (Colombie)"
+author: "Hugo Thomas, Florent Demoraes"
+date: "21/10/2021"
 output: html_document
 ---
 
