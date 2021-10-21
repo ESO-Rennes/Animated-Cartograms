@@ -17,6 +17,7 @@ This study is part of the activities of the Modural program funded by the French
 
 Access to R markdown script
 
+Acknowledgements: Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet
 
 <br>
 ----- VERSION FRANCAISE ----- <br>
@@ -25,9 +26,11 @@ Access to R markdown script
 
 ## Révéler les pulsations urbaines circadiennes à l’aide d’un cartogramme animé : l’exemple de Bogotá
 
-Ce billet présente l’évolution de la distribution spatiale d’une population urbaine sur 24 heures. Plus précisément, l’objectif est de restituer sur une carte dynamique les rééquilibrages de population qui s’opèrent dans la ville pendant la journée en ayant comme point de départ la répartition de la population au petit matin avant que les citadins ne bougent. L’exemple développé porte sur Bogotá, capitale de la Colombie, rassemblant 9 millions d’habitants. La technique cartographique employée est celle d’un cartogramme animé, dont l’usage est encore peu répandu en géographie. Les données utilisées sont les micro-données du recensement de 2018 (population sur le lieu de résidence) et celles de la dernière enquête OD menée en 2019 auprès d’un échantillon de 20 000 ménages (population sur le lieu d’activité). Ce travail présente ainsi l’originalité de combiner en mode dynamique des données socio-démographiques et de mobilité quotidienne. La programmation a été mise en œuvre dans l’environnement R et fait appel à plusieurs packages dont cartogramR  développé par notre équipe. Dans une perspective de science ouverte et de reproductibilité, le script R (markdown) est fourni plus bas.
+Ce billet présente l’évolution de la distribution spatiale d’une population urbaine sur 24 heures. Plus précisément, l’objectif est de restituer sur une carte dynamique les rééquilibrages de population qui s’opèrent dans la ville pendant la journée en ayant comme point de départ la répartition de la population au petit matin avant que les citadins ne bougent. L’exemple développé porte sur Bogotá, capitale de la Colombie, rassemblant 9 millions d’habitants. La technique cartographique employée est celle d’un cartogramme animé, dont l’usage est encore peu répandu en géographie. Les données utilisées sont les micro-données du recensement de 2018 (population sur le lieu de résidence) et celles de la dernière enquête OD menée en 2019 auprès d’un échantillon de 20 000 ménages (population sur le lieu d’activité). Ce travail présente ainsi l’originalité de combiner en mode dynamique des données socio-démographiques et de mobilité quotidienne. La programmation a été mise en œuvre dans l’environnement R et fait appel à plusieurs packages dont cartogramR  développé par <a href="https://perso.univ-rennes2.fr/pierre-andre.cornillon" target="_new" rel="noopener"><strong>Pierre-André Cornillon</strong></a> (UMR CNRS 6625 - IRMAR : Institut de Recherche Mathématique de Rennes - Université Rennes 2) et <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_new" rel="noopener"><strong>Florent Demoraes</strong></a>. Dans une perspective de science ouverte et de reproductibilité, le script R (markdown) est fourni plus bas.
 
 Cette étude s’inscrit dans les activités du programme Modural financé par l’Agence Nationale de la Recherche française et est menée en lien avec l’Institut National d’Études Démographiques de France (Ined) et le Centre National de la Recherche Scientifique de France (CNRS) qui travaillent actuellement sur l’extension du <a href="https://mobiliscope.cnrs.fr/fr" target="_new" rel="noopener"><strong>projet Mobiliscope</strong></a> aux métropoles d’Amérique latine. Les résultats mettent bien en évidence la persistance du modèle socio-résidentiel ségrégatif de la ville et le maintien d’un découplage spatial très marqué entre lieux de résidence et lieux d’activité, le centre polarisant l’essentiel des flux en provenance de la périphérie populaire densément peuplée.
 
 #### Mots-clefs
 <i>Pulsations urbaines circadiennes, rééquilibrage populationnel journalier, densités diurnes, découplage spatial, micro-données, cartogramme animé, script R, Bogotá</i>
+
+Remerciements : Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet
