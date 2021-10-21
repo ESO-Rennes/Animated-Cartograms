@@ -21,7 +21,7 @@ Acknowledgements: <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet<
 
 <br>
 <br>
------ VERSION FRANCAISE ----- <br>
+----- VERSION FRANÇAISE ----- <br>
 
 <i>Ce travail a été réalisé par Hugo Thomas lors de son stage encadré par Florent Demoraes, à l'unité de recherche CNRS ESO de Rennes (France), en septembre et octobre 2021.</i>
 
