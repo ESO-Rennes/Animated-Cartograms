@@ -4,7 +4,7 @@ R script to create animated cartograms<br>
 
 
 ----- ENGLISH VERSION ----- <br>
-<i>This work was carried out by Hugo Thomas during his training period supervised by Florent Demoraes, at the CNRS ESO research unit in Rennes (France), in September and October 2021.</i>
+<i>This work was carried out by <a href="https://fr.linkedin.com/in/ht128" target="_new" rel="noopener">Hugo Thomas</a> during his training period supervised by <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_new" rel="noopener">Florent Demoraes</a>, at the CNRS ESO research unit in Rennes (France), in September and October 2021.</i>
 
 ## Uncovering urban circadian pulses based on an animated cartogram: the example of Bogotá
 
@@ -23,7 +23,7 @@ Acknowledgements: <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet<
 <br>
 ----- VERSION FRANÇAISE ----- <br>
 
-<i>Ce travail a été réalisé par Hugo Thomas lors de son stage encadré par Florent Demoraes, à l'unité de recherche CNRS ESO de Rennes (France), en septembre et octobre 2021.</i>
+<i>Ce travail a été réalisé par <a href="https://fr.linkedin.com/in/ht128" target="_new" rel="noopener">Hugo Thomas</a> lors de son stage encadré par <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_new" rel="noopener">Florent Demoraes</a>, à l'unité de recherche CNRS ESO de Rennes (France), en septembre et octobre 2021.</i>
 
 ## Révéler les pulsations urbaines circadiennes à l’aide d’un cartogramme animé : l’exemple de Bogotá
 
