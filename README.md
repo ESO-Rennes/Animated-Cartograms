@@ -1,7 +1,7 @@
 # Animated Cartograms
-R script to create animated cartograms
-<br>
-<br>
+R script to create animated cartograms<br>
+<a target="_blank" rel="noopener noreferrer"><img src="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsation.gif" width="500"></a> 
+
 
 ----- ENGLISH VERSION ----- <br>
 <i>This work was carried out by Hugo Thomas during his training period supervised by Florent Demoraes, at the CNRS ESO research unit in Rennes (France), in September and October 2021.</i>
