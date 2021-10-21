@@ -4,7 +4,7 @@ R script to create animated cartograms<br>
 
 
 ----- ENGLISH VERSION ----- <br>
-<i>This work was carried out by <a href="https://fr.linkedin.com/in/ht128" target="_blank" rel="noopener">Hugo Thomas</a> during his training period supervised by <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_blank" rel="noopener">Florent Demoraes</a>, at the CNRS ESO research unit in Rennes (France), in September and October 2021.</i>
+<i>This work was carried out by <a href="https://fr.linkedin.com/in/ht128" target="_blank">Hugo Thomas</a> during his training period supervised by <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_blank" rel="noopener">Florent Demoraes</a>, at the CNRS ESO research unit in Rennes (France), in September and October 2021.</i>
 
 ## Uncovering urban circadian pulses based on an animated cartogram: the example of Bogotá
 
