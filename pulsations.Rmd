@@ -33,7 +33,7 @@ output: html_document
     library(av) #pour créer une vidéo mp4
     ```
 
-## Téléchargement du jeu de données
+## Téléchargement et décompression du jeu de données
     download("https://bit.ly/3jonrTa", dest="Data_Pulsation.zip", mode="wb", overwrite = TRUE)
     unzip("Data_Pulsation.zip", exdir = ".")
 
