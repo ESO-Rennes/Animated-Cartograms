@@ -54,7 +54,7 @@ Este estudio forma parte de las actividades del <a href="https://modural.hypothe
 
 --> Acceder al <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations.Rmd" target="_blank" rel="noopener"><strong>archivo R markdown</strong></a>
 
-Agradecimientos : Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet
+Agradecimientos : <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i>
 
 
 
