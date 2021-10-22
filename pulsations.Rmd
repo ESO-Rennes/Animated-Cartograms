@@ -10,6 +10,7 @@ output: html_document
 ## Chargement des packages
 
     ```{r}
+    library(downloader)
     library(tidyverse)
     library(sf) # version 0.9-8
     library(sp) # version 1.4-5
@@ -32,16 +33,19 @@ output: html_document
     library(av) #pour créer une vidéo mp4
     ```
 
+## Téléchargement du jeu de données
+    download("https://bit.ly/3jonrTa", dest="Data_Pulsation.zip", mode="wb", overwrite = TRUE)
+    unzip("Data_Pulsation.zip", exdir = ".")
 
 ## Chargement de la géométrie
     ```{r}
-    EMU2019 <- st_read(dsn = getwd(), layer = "EMU2019", stringsAsFactors = FALSE)
+    EMU2019 <- st_read(dsn = "Data_Pulsation", layer = "EMU2019", stringsAsFactors = FALSE)
     ```
 
 
 ## Chargement des fichiers de l'enquête
     ```{r}
-    viajes <- read.xlsx("ViajesEODH2019.xlsx") #134497 observations
+    viajes <- read.xlsx("Data_Pulsation/ViajesEODH2019.xlsx") #134497 observations
     ```
 
 ## Définition d'une fonction pour rendre les couleurs transparentes
