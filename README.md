@@ -1,6 +1,9 @@
 # Animated Cartograms
 R script to create animated cartograms<br>
-<a target="_blank" rel="noopener noreferrer"><img src="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsation.gif" width="500"></a> 
+
+
+https://user-images.githubusercontent.com/45881567/138525838-d1a5fc91-60fd-487c-940a-da44d83f53d9.mp4
+
 
 
 ----- ENGLISH VERSION ----- <br>
