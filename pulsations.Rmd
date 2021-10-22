@@ -7,6 +7,11 @@ output: html_document
 
 # Pulsations
 
+## Définition de l'environnement de travail
+    ```{r setup, include=FALSE}
+    knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+    ```
+
 ## Chargement des packages
 
     ```{r}
@@ -34,14 +39,15 @@ output: html_document
     ```
 
 ## Téléchargement et décompression du jeu de données
+    ```{r}
     download("https://bit.ly/3jonrTa", dest="Data_Pulsation.zip", mode="wb", overwrite = TRUE)
     unzip("Data_Pulsation.zip", exdir = ".")
+    ```
 
 ## Chargement de la géométrie
     ```{r}
     EMU2019 <- st_read(dsn = "Data_Pulsation", layer = "EMU2019", stringsAsFactors = FALSE)
     ```
-
 
 ## Chargement des fichiers de l'enquête
     ```{r}
