@@ -4,8 +4,11 @@ R script to create animated cartograms<br>
 
 https://user-images.githubusercontent.com/45881567/138525838-d1a5fc91-60fd-487c-940a-da44d83f53d9.mp4
 
+<strong>How to read the animated map?</strong><br>
+<i>Distortion is based on population size present in each spatial unit every 15 minutes. Smooth surface refers to a multiplicative factor. A value of 2 means that the population in a spatial unit is twice as large as the nighttime population. From yellow to dark brown, population increases. From light blue to dark blue population decreases. The four Modural project survey zones are outlined is the outer ring of the city.</i>
 
-
+<br>
+<br>
 ----- ENGLISH VERSION ----- <br>
 <i>This work was carried out by <a href="https://fr.linkedin.com/in/ht128" target="_blank">Hugo Thomas</a> during his training period supervised by <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_blank" rel="noopener">Florent Demoraes</a>, at the CNRS ESO research unit in Rennes (France), in September and October 2021.</i>
 
