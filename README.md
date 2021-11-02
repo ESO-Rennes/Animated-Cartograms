@@ -79,17 +79,21 @@ Cauvin C, Escobar F, Serradj A (2007). Cartographie thématique 2 – Des transf
 
 Cauvin C, Escobar F, Serradj A (2010).  Cartography and the Impact of the Quantitative Revolution. John Wiley & Sons, Inc. https://onlinelibrary.wiley.com/doi/book/10.1002/9781118558126.
 
+Cornillon P.-A., Demoraes F., (2021) -  Package cartogramR: User guide. https://hal.archives-ouvertes.fr/hal-03280009
+
 Cunty C., Mathian H. (2017). « Les pratiques de cartographie animée pour représenter le changement ». Mappemonde, no 120. En ligne : http://mappemonde.mgm.fr/120as1/
 
 Demoraes F., Bouquet M., Mericskay B.,(2021) – How visually effective are animated cartograms? Potential improvements based on the example of segregation in Bogotá (1993-2005), M@ppemonde. DOI:10.4000/mappemonde.5928 - https://hal.archives-ouvertes.fr/hal-03152983 
 
 Demoraes F., Bouquet M., Mericskay B.,(2021) – L’efficacité visuelle des cartogrammes animés en question - Une piste d’amélioration à travers l’exemple de la ségrégation à Bogotá (1993-2005), M@ppemonde. DOI:10.4000/mappemonde.5813 - https://hal.archives-ouvertes.fr/hal-03029241 
 
-Dougenik JA, Chrisman NR, Niemeyer DR (1985). “An  Algorithm  To Construct Continuous Area Cartograms.”   The Professional Geographer, 37(1), 75–81. https://onlinelibrary.wiley.com/doi/abs/10.1111/j.0033-0124.1985.00075.x
+Dougenik JA, Chrisman NR, Niemeyer DR (1985). “An  Algorithm To Construct Continuous Area Cartograms.”   The Professional Geographer, 37(1), 75–81. https://onlinelibrary.wiley.com/doi/abs/10.1111/j.0033-0124.1985.00075.x
 
 Gastner MT,  Newman MEJ  (2004).   “Diffusion-Based Method  for  Producing Density-Equalizing Maps.”  Proceedings of the National Academy of Sciences, 101(20), 7499–7504. https://doi.org/10.1073/pnas.0400280101
 
 Gastner MT,  Seguy V, More P (2018). “Fast Flow-Based Algorithm  for Creating Density-Equalizing Map Projections.”  Proceedings of the National Academy of Sciences, 115(10), E2156–E2164. https://doi.org/10.1073/pnas.1712674115
+
+Genebes L., Renaud A., Sémécurbe F., (2018) – Le lissage spatial, in Loonis, V. (dir.), Manuel d’analyse spatiale, Insee Méthodes n°131, https://www.insee.fr/fr/statistiques/fichier/3635442/imet131-l-chapitre-8.pdf 
 
 Lambert N., Zanin C. (2016). Manuel de cartographie : Principes, méthodes, applications. Malakoff : Armand Colin, 224 p.
 
