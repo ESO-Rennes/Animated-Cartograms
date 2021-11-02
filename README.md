@@ -5,7 +5,7 @@ R script to create animated cartograms<br>
 https://user-images.githubusercontent.com/45881567/138525838-d1a5fc91-60fd-487c-940a-da44d83f53d9.mp4
 
 <strong>How to read the animated map?</strong><br>
-<i>Distortion is based on population size present in each spatial unit every 15 minutes. Smooth surface refers to a multiplicative factor. A value of 2 means that the population in a spatial unit is twice as large as the nighttime population. From yellow to dark brown, population increases. From light blue to dark blue population decreases. The four Modural project survey zones are outlined is the outer ring of the city.</i>
+<i>Distortion is based on population size present in each spatial unit every 15 minutes. Smooth surface refers to a multiplicative factor. A value of 2 means that the population in a spatial unit is twice as large as the nighttime population. From yellow to dark brown, population increases. From light blue to dark blue population decreases. The four Modural project survey zones are outlined in the outer ring of the city.</i>
 
 <br>
 <br>
@@ -69,6 +69,8 @@ Agradecimientos : <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet<
 <br>
 </br> <strong>References</strong>
 
+Antoni J.-P., Klein O. (2003). « L’animation d’anamorphoses - Un atout pour la communication en cartographie ». Revue internationale de Géomatique, vol. 13, no 1, p. 81-92. En ligne : https://archives-rig.revuesonline.com/article.jsp?articleId=3885
+
 Bertin J (1967). Sémiologie graphique: les diagrammes, les réseaux, les cartes. Mouton & Gauthier-Villars, Paris-La Haye.
 
 Bertin J (1983). Semiology of graphics: diagrams, networks, maps. The University of Wisconsin Press, Madison, (trans. W. j. Berg). ISBN 0-299-09060-4.
@@ -76,6 +78,8 @@ Bertin J (1983). Semiology of graphics: diagrams, networks, maps. The University
 Cauvin C, Escobar F, Serradj A (2007). Cartographie thématique 2 – Des transformations incontournables. Traité IGAT  – Information Géographique et Aménagement du Territoire ; Aspects fondamentaux de l’analyse spatiale. Hermès-Lavoisier.
 
 Cauvin C, Escobar F, Serradj A (2010).  Cartography and the Impact of the Quantitative Revolution. John Wiley & Sons, Inc. https://onlinelibrary.wiley.com/doi/book/10.1002/9781118558126.
+
+Cunty C., Mathian H. (2017). « Les pratiques de cartographie animée pour représenter le changement ». Mappemonde, no 120. En ligne : http://mappemonde.mgm.fr/120as1/
 
 Demoraes F., Bouquet M., Mericskay B.,(2021) – How visually effective are animated cartograms? Potential improvements based on the example of segregation in Bogotá (1993-2005), M@ppemonde. DOI:10.4000/mappemonde.5928 - https://hal.archives-ouvertes.fr/hal-03152983 
 
@@ -87,8 +91,14 @@ Gastner MT,  Newman MEJ  (2004).   “Diffusion-Based Method  for  Producing Den
 
 Gastner MT,  Seguy V, More P (2018). “Fast Flow-Based Algorithm  for Creating Density-Equalizing Map Projections.”  Proceedings of the National Academy of Sciences, 115(10), E2156–E2164. https://doi.org/10.1073/pnas.1712674115
 
+Lambert N., Zanin C. (2016). Manuel de cartographie : Principes, méthodes, applications. Malakoff : Armand Colin, 224 p.
+
 Nusrat S, Kobourov S (2016). “The State of the Art  in Cartograms.”  Computer Graphics Forum, 35(3), 619–642. https://onlinelibrary.wiley.com/doi/abs/10.1111/cgf.12932
 
 Pebesma E (2018). “Simple Features for R: Standardized Support for Spatial Vector Data.” The R Journal, 10(1), 439–446. doi:10.32614/RJ-2018-009. https://journal.r-project.org/archive/2018/RJ-2018-009/index.html
 
+Silverman B.W. (1986). Density Estimation for Statistics and Data Analysis. Londres : Chapman and Hall.
+
 Tobler W (2004). “Thirty Five Years of Computer Cartograms.”  Annals of the Association of American Geographers, 94(1), 58–73. https://onlinelibrary.wiley.com/doi/full/10.1111/j.1467-8306.2004.09401004.x
+
+Zaninetti J.-M. (2005). Statistique spatiale : méthodes et applications géomatiques. Paris : Hermès-Lavoisier, coll. « Applications des SIG », 320 p. ISBN 2-7462-1203-X
