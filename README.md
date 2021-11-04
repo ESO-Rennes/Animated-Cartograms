@@ -6,26 +6,18 @@ R script to create animated cartograms<br>
 <table>
 	<tr valign="top">
 		<td width="50%">
-			<p class="msonormal">https://user-images.githubusercontent.com/45881567/138525838-d1a5fc91-60fd-487c-940a-da44d83f53d9.mp4</p>
+			<p class="msonormal">https://user-images.githubusercontent.com/45881567/140394693-62c9cb2f-a3fa-4c80-8d69-0a2eabde6178.mp4</p>
 		</td>
 		<td width="50%">
-			<p class="msonormal">https://user-images.githubusercontent.com/45881567/140334781-a99538e2-77d9-4b5c-8809-4f45a1cd27a6.mp4</p>
+			<p class="msonormal">https://user-images.githubusercontent.com/45881567/140394713-c353fad5-5a71-45bd-b86b-ff77ebd56875.mp4</p>
 		</td>
 	</tr>
 </table>
 
 
-
-
-
-https://user-images.githubusercontent.com/45881567/138525838-d1a5fc91-60fd-487c-940a-da44d83f53d9.mp4 
-
-https://user-images.githubusercontent.com/45881567/140334781-a99538e2-77d9-4b5c-8809-4f45a1cd27a6.mp4
-
-
-
-<strong>How to read the animated map?</strong><br>
-<i>Distortion is based on population size present in each spatial unit every 15 minutes. Smooth surface refers to a multiplicative factor. A value of 2 means that the population in a spatial unit is twice as large as the nighttime population. From yellow to dark brown, population increases. From light blue to dark blue population decreases. The four Modural project survey zones are outlined in the outer ring of the city.</i>
+<strong>How to read the animated cartograms?</strong><br>
+<i>Distortion is based on population size present in each spatial unit every 15 minutes. Animations start from the undistorted basemap of the city of Bogotá. From this basemap, a cartogram is progressively generated until the reference distribution of the night population at 3:00 am is obtained. 
+On the right animation, smooth surface refers to a multiplicative factor. A value of 2 means that the population in a spatial unit is twice as large as the nighttime population. From yellow to dark brown, population increases. From light blue to dark blue population decreases. Districts (localidades) are outlined in black to help the reader find his bearings.</i>
 
 <br>
 <br>
