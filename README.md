@@ -2,32 +2,20 @@
 R script to create animated cartograms<br>
 
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=windows-1252"/>
-	<meta name="generator" content="LibreOffice 6.2.8.2 (Windows)"/>
-	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-11-04T15:54:18.707000000"/>
-	<meta name="Originator" content="Microsoft Word 15"/>
-	<meta name="ProgId" content="Word.Document"/>
-</head>
-<body lang="fr-FR" text="#000000" dir="ltr">
-<table cellpadding="0" cellspacing="0" style="page-break-before: always">
+
+<table>
 	<tr valign="top">
-		<td width="302" style="border: 1.00pt solid #000000; padding: 0.05cm"><p class="msonormal" style="margin-bottom: 0cm">
-			&nbsp;</p>
+		<td width="50%">
 			<p class="msonormal">https://user-images.githubusercontent.com/45881567/138525838-d1a5fc91-60fd-487c-940a-da44d83f53d9.mp4</p>
 		</td>
-		<td width="302" style="border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1.00pt solid #000000; padding-top: 0.05cm; padding-bottom: 0.05cm; padding-left: 0cm; padding-right: 0.05cm"><p class="msonormal" style="margin-bottom: 0cm">
-			&nbsp;</p>
+		<td width="50%">
 			<p class="msonormal">https://user-images.githubusercontent.com/45881567/140334781-a99538e2-77d9-4b5c-8809-4f45a1cd27a6.mp4</p>
 		</td>
 	</tr>
 </table>
-<p class="msonormal">&nbsp;</p>
-</body>
-</html>
+
+
+
 
 
 https://user-images.githubusercontent.com/45881567/138525838-d1a5fc91-60fd-487c-940a-da44d83f53d9.mp4 
