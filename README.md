@@ -9,14 +9,17 @@ R script to create animated cartograms<br>
 			<p class="msonormal">https://user-images.githubusercontent.com/45881567/140394693-62c9cb2f-a3fa-4c80-8d69-0a2eabde6178.mp4</p>
 		</td>
 		<td width="50%">
-			<p class="msonormal">https://user-images.githubusercontent.com/45881567/140394713-c353fad5-5a71-45bd-b86b-ff77ebd56875.mp4</p>
+			<p class="msonormal">https://user-images.githubusercontent.com/45881567/140397194-89a10c89-47a2-4ef7-85c3-f5efa025ab06.mp4</p>
 		</td>
 	</tr>
 </table>
 
 
+
+
+
 <strong>How to read the animated cartograms?</strong><br>
-<i>Distortion is based on population size present in each spatial unit every 15 minutes. Animations start from the undistorted basemap of the city of Bogotá. From this basemap, a cartogram is progressively generated until the reference distribution of the night population at 3:00 am is obtained. 
+<i>Distortion is based on population size present in each spatial unit every 15 minutes. Animations start from the undistorted basemap of the city of Bogotá. From this basemap, a cartogram is progressively generated until the reference distribution (night population at 3:00 am) is obtained. 
 On the right animation, smooth surface refers to a multiplicative factor. A value of 2 means that the population in a spatial unit is twice as large as the nighttime population. From yellow to dark brown, population increases. From light blue to dark blue population decreases. Districts (localidades) are outlined in black to help the reader find his bearings.</i>
 
 <br>
