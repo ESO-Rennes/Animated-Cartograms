@@ -2,14 +2,13 @@
 R script to create animated cartograms<br>
 
 
-
 <table>
 	<tr valign="top">
 		<td width=450>
-			<p class="msonormal">https://user-images.githubusercontent.com/45881567/140394693-62c9cb2f-a3fa-4c80-8d69-0a2eabde6178.mp4</p>
+			<p class="msonormal">https://user-images.githubusercontent.com/45881567/140784890-d721dc62-30c9-4060-a370-eae19dd245d6.mp4</p>
 		</td>
-		<td width=500>
-			<p class="msonormal">https://user-images.githubusercontent.com/45881567/140397194-89a10c89-47a2-4ef7-85c3-f5efa025ab06.mp4</p>
+		<td width=450>
+			<p class="msonormal">https://user-images.githubusercontent.com/45881567/140785023-2e957ef2-1a69-4302-bb37-45bc0673e30c.mp4</p>
 		</td>
 	</tr>
 </table>
