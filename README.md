@@ -35,7 +35,7 @@ This study is part of the activities of the <a href="https://modural.hypotheses.
 #### Key words 
 <i>Circadian urban pulses, daily population rebalancing, diurnal densities, spatial mismatch, micro data, animated cartogram, R script, Bogotá</i>
 
---> Access to the <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations.Rmd" target="_blank" rel="noopener"><strong>R markdown script</strong></a>
+--> Access to the <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong>R markdown script</strong></a>
 
 Acknowledgements: <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i>
 
@@ -54,7 +54,7 @@ Cette étude s’inscrit dans les activités du <a href="https://modural.hypothe
 #### Mots-clefs
 <i>Pulsations urbaines circadiennes, rééquilibrage populationnel journalier, densités diurnes, découplage spatial, micro-données, cartogramme animé, script R, Bogotá</i>
 
---> Accéder au <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations.Rmd" target="_blank" rel="noopener"><strong> fichier R markdown</strong></a>
+--> Accéder au <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong> fichier R markdown</strong></a>
 
 Remerciements : <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i><br>
 <br>
@@ -72,7 +72,7 @@ Este estudio forma parte de las actividades del <a href="https://modural.hypothe
 #### Palabras clave
 <i>pulsos urbanos circadianos, reequilibrio diario de la población, densidades diurnas, disociación espacial, microdatos, cartograma animado, script R, Bogotá</i>
 
---> Acceder al <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations.Rmd" target="_blank" rel="noopener"><strong>archivo R markdown</strong></a>
+--> Acceder al <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong>archivo R markdown</strong></a>
 
 Agradecimientos : <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i>
 
