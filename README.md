@@ -23,7 +23,7 @@ Sources: Encuesta de Movilidad Urbana 2019 (Secretaría de Movilidad del Distrit
 <br>
 <br>
 ----- ENGLISH VERSION ----- <br>
-<i>This work was carried out by <a href="https://fr.linkedin.com/in/ht128" target="_blank">Hugo Thomas</a> during his training period supervised by <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_blank" rel="noopener">Florent Demoraes</a>, at the CNRS ESO research unit in Rennes (France), in September and October 2021.</i>
+<i>This work was carried out by <a href="https://perso.univ-rennes2.fr/hugo.thomas" target="_blank">Hugo Thomas</a> and <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_blank" rel="noopener">Florent Demoraes</a> at the CNRS ESO research unit in Rennes (France), in September and October 2021.</i>
 
 ## Uncovering urban circadian pulses based on an animated cartogram: the example of Bogotá
 
@@ -34,7 +34,8 @@ This study is part of the activities of the <a href="https://modural.hypotheses.
 #### Key words 
 <i>Circadian urban pulses, daily population rebalancing, diurnal densities, spatial mismatch, micro data, animated cartogram, R script, Bogotá</i>
 
---> Access to the <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong>R markdown script</strong></a>
+--> Access to the <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong>R markdown script</strong></a><br>
+--> Access to the <a href="https://htmlpreview.github.io/?https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final_FR.html" target="_blank" rel="noopener"><strong>HTML laid-out output</strong></a>
 
 Acknowledgements: <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i>
 
@@ -42,7 +43,7 @@ Acknowledgements: <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet<
 <br>
 ----- VERSION FRANÇAISE ----- <br>
 
-<i>Ce travail a été réalisé par <a href="https://fr.linkedin.com/in/ht128" target="_blank" rel="noopener">Hugo Thomas</a> lors de son stage encadré par <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_blank" rel="noopener">Florent Demoraes</a>, à l'unité de recherche CNRS ESO de Rennes (France), en septembre et octobre 2021.</i>
+<i>Ce travail a été réalisé par <a href="https://perso.univ-rennes2.fr/hugo.thomas" target="_blank" rel="noopener">Hugo Thomas</a> et <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_blank" rel="noopener">Florent Demoraes</a> à l'unité de recherche CNRS ESO de Rennes (France), en septembre et octobre 2021.</i>
 
 ## Révéler les pulsations urbaines circadiennes à l’aide d’un cartogramme animé : l’exemple de Bogotá
 
@@ -53,14 +54,15 @@ Cette étude s’inscrit dans les activités du <a href="https://modural.hypothe
 #### Mots-clefs
 <i>Pulsations urbaines circadiennes, rééquilibrage populationnel journalier, densités diurnes, découplage spatial, micro-données, cartogramme animé, script R, Bogotá</i>
 
---> Accéder au <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong> fichier R markdown</strong></a>
+--> Accéder au <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong> fichier R markdown</strong></a><br>
+--> Accéder au <a href="https://htmlpreview.github.io/?https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final_FR.html" target="_blank" rel="noopener"><strong>document HTML mis en page</strong></a>
 
 Remerciements : <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i><br>
 <br>
 <br>
 
 ----- VERSIÓN ESPAÑOLA ----- <br>
-<i>Este trabajo fue realizado por <a href="https://fr.linkedin.com/in/ht128" target="_blank">Hugo Thomas</a> durante su práctica supervisada por <a href="http://www.ifea.org.pe/investigadores/florent-demoraes/" target="_blank" rel="noopener">Florent Demoraes</a>, en la unidad de investigación del CNRS ESO en Rennes (Francia), en septiembre y octubre de 2021.</i>
+<i>Este trabajo fue realizado por <a href="https://perso.univ-rennes2.fr/hugo.thomas" target="_blank">Hugo Thomas</a> y <a href="http://www.ifea.org.pe/investigadores/florent-demoraes/" target="_blank" rel="noopener">Florent Demoraes</a> en la unidad de investigación del CNRS ESO en Rennes (Francia), en septiembre y octubre de 2021.</i>
 <br>
 ## Revelar los pulsos circadianos urbanos con un cartograma animado: el ejemplo de Bogotá
 
@@ -71,7 +73,8 @@ Este estudio forma parte de las actividades del <a href="https://modural.hypothe
 #### Palabras clave
 <i>pulsos urbanos circadianos, reequilibrio diario de la población, densidades diurnas, disociación espacial, microdatos, cartograma animado, script R, Bogotá</i>
 
---> Acceder al <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong>archivo R markdown</strong></a>
+--> Acceder al <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong>archivo R markdown</strong></a><br>
+--> Acceder al <a href="https://htmlpreview.github.io/?https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final_FR.html" target="_blank" rel="noopener"><strong>documento HTML diagramado</strong></a>
 
 Agradecimientos : <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i>
 
