@@ -43,7 +43,7 @@ Acknowledgements: <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet<
 <br>
 ----- VERSION FRANÇAISE ----- <br>
 
-<i>Ce travail a été réalisé par <a href="https://perso.univ-rennes2.fr/hugo.thomas" target="_blank" rel="noopener">Hugo Thomas</a> et <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_blank" rel="noopener">Florent Demoraes</a> à l'unité de recherche CNRS ESO de Rennes (France), en septembre et octobre 2021.</i>
+<i>Ce travail a été réalisé par <a href="https://perso.univ-rennes2.fr/hugo.thomas" target="_blank" rel="noopener">Hugo Thomas</a> et <a href="https://perso.univ-rennes2.fr/florent.demoraes" target="_blank" rel="noopener">Florent Demoraes</a> au sein de l'unité de recherche CNRS ESO de Rennes (France), en septembre et octobre 2021.</i>
 
 ## Révéler les pulsations urbaines circadiennes à l’aide d’un cartogramme animé : l’exemple de Bogotá
 
