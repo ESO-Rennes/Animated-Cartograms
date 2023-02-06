@@ -1523,7 +1523,7 @@ Pour ce faire, on réalise une interpolation entre la carte de Bogotá non défo
 
 ## Création d'une vidéo mp4 à partir de la série d'images produites (cartogramme seul)
 
-```{r}
+```{r results='hide'}
     #export en mp4
     rootwd <- getwd()
     setwd(paste0(getwd(),"/Animated_Cartogram"))
@@ -1577,7 +1577,7 @@ Pour ce faire, on réalise une interpolation entre la carte de Bogotá non défo
 
 ## Création d'une vidéo mp4 à partir de la série d'images produites (cartogramme avec seconde variable non lissée)
 
-```{r}
+```{r results='hide'}
     #export en mp4
     rootwd <- getwd()
     setwd(paste0(getwd(),"/Choropleth_animated_cartogram"))
@@ -1631,7 +1631,7 @@ Pour ce faire, on réalise une interpolation entre la carte de Bogotá non défo
 
 ## Création d'une vidéo mp4 à partir de la série d'images produites (cartogramme et seconde variable discrétisée lissée)
 
-```{r}
+```{r results='hide'}
     #export en mp4
     rootwd <- getwd()
     setwd(paste0(getwd(),"/Smoothed_binned_colored_animated_cartogram"))
@@ -1686,7 +1686,7 @@ Pour ce faire, on réalise une interpolation entre la carte de Bogotá non défo
 
 ## Création d'une vidéo mp4 à partir de la série d'images produites (cartogramme et seconde variable lissée continue)
 
-```{r}
+```{r results='hide'}
     #export en mp4
     rootwd <- getwd()
     setwd(paste0(getwd(),"/Smoothed_continuous_colored_animated_cartogram"))
