@@ -54,7 +54,7 @@ Cette étude s’inscrit dans les activités du <a href="https://modural.hypothe
 #### Mots-clefs
 <i>Pulsations urbaines circadiennes, rééquilibrage populationnel journalier, densités diurnes, découplage spatial, micro-données, cartogramme animé, script R, Bogotá</i>
 
---> Accéder au <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong> fichier R markdown</strong></a><br>
+--> Accéder au <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final_FR.Rmd" target="_blank" rel="noopener"><strong> fichier R markdown</strong></a><br>
 --> Accéder au <a href="https://htmlpreview.github.io/?https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final_FR.html" target="_blank" rel="noopener"><strong>document HTML mis en page</strong></a>
 
 Remerciements : <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i><br>
@@ -73,8 +73,8 @@ Este estudio forma parte de las actividades del <a href="https://modural.hypothe
 #### Palabras clave
 <i>pulsos urbanos circadianos, reequilibrio diario de la población, densidades diurnas, disociación espacial, microdatos, cartograma animado, script R, Bogotá</i>
 
---> Acceder al <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong>archivo R markdown</strong></a><br>
---> Acceder al <a href="https://htmlpreview.github.io/?https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final_FR.html" target="_blank" rel="noopener"><strong>documento HTML diagramado</strong></a>
+--> Acceder al <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final_EN.Rmd" target="_blank" rel="noopener"><strong>archivo R markdown</strong></a><br>
+--> Acceder al <a href="https://htmlpreview.github.io/?https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final_EN.html" target="_blank" rel="noopener"><strong>documento HTML diagramado</strong></a>
 
 Agradecimientos : <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i>
 
