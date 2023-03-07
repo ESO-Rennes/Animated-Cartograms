@@ -34,8 +34,8 @@ This study is part of the activities of the <a href="https://modural.hypotheses.
 #### Key words 
 <i>Circadian urban pulses, daily population rebalancing, diurnal densities, spatial mismatch, micro data, animated cartogram, R script, Bogotá</i>
 
---> Access to the <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final.Rmd" target="_blank" rel="noopener"><strong>R markdown script</strong></a><br>
---> Access to the <a href="https://htmlpreview.github.io/?https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final_FR.html" target="_blank" rel="noopener"><strong>HTML laid-out output</strong></a>
+--> Access to the <a href="https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final_EN.Rmd" target="_blank" rel="noopener"><strong>R markdown script</strong></a><br>
+--> Access to the <a href="https://htmlpreview.github.io/?https://github.com/ESO-Rennes/Animated-Cartograms/blob/main/pulsations_final_EN.html" target="_blank" rel="noopener"><strong>HTML laid-out output</strong></a>
 
 Acknowledgements: <i>Pierre-André Cornillon, Guillaume Le Roux, Aurélie Douet</i>
 
